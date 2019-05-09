@@ -37,6 +37,37 @@
 // }
 // // Everytime you make a request, update the stats.
 // // How many requests should each user be able to make during what time period?
+
+$host = 'localhost';
+$db = 'books';
+$user = 'root';
+$pass = 'Carlphp2019';
+$charset = 'utf8';
+
+$dsn = "mysql:host=$host;
+ dbname=$db;
+ charset=$charset";
+
+try {   
+     $pdo = new PDO($dsn, $user, $pass);
+} catch (\PDOException $e) {
+     throw new \PDOException($e->getMessage(),(int)$e->getCode());
+}
+
+if (isset($_POST['Skicka'])) {
+    //echo 'Skickat med formulär!';
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $passWord = filter_input(INPUT_POST, 'passWord', FILTER_SANITIZE_STRING);
+    $apiKey = filter_input(INPUT_POST, 'apiKey', FILTER_SANITIZE_STRING);
+    $passWord = password_hash($passWord, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO users(name, passWord, apiKey) VALUES('$name', '$passWord', '$apiKey')";
+    //echo $sql . '<br>'; //(Mickes grej för att kolla varför inte formuläret fungerade)
+    $stmt =$pdo->prepare($sql); 
+    $stmt->execute();
+    // header("location: index.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,9 +81,10 @@
 <body>
 <h1>Welcome to The Bookshop Api Service</h1>
 <h2>Please register with name and password to get api-key</h2>    
-<form method="POST" action="newuser.php">
+<form method="POST" action="index.php">
     <input type="text" name="name"><caption><i> Name</i></caption><br>
     <input type="text" name="password"><caption><i> Password</i></caption><br>
+    <input type="text" name="apiKey"><caption><i> Api Key</i></caption><br>
     <input type="submit" name="Skicka" value="Submit">
 </form>
 
