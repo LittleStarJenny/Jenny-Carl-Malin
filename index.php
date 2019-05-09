@@ -9,12 +9,15 @@
 //     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 // ];
 // $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=$charset";
+
 // try {
 //     $pdo = new PDO($dsn, $user, $pass, $options);
 // } catch (\PDOException $e) {
 //     throw new \PDOException($e->getMessage(), (int)$e->getCode());
 // }
+
 // $valid_user = false;
+
 // if (isset($_GET['apikey'])) {
 //     // Check if apikey is valid.
 //     $apikey = filter_input(INPUT_GET, 'apikey', FILTER_SANITIZE_STRING);
@@ -46,8 +49,12 @@
 </head>
 <body>
 <h1>Welcome to The Bookshop Api Service</h1>
-<h2>Please register with email and password to get api-key</h2>    
-<form action=""></form>
+<h2>Please register with name and password to get api-key</h2>    
+<form method="POST" action="newuser.php">
+    <input type="text" name="name"><caption><i> Name</i></caption><br>
+    <input type="text" name="password"><caption><i> Password</i></caption><br>
+    <input type="submit" name="Skicka" value="Submit">
+</form>
 
 </body>
 </html>
