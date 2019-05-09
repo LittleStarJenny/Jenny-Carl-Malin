@@ -42,7 +42,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="main.css" media="screen" />
-    <title>Books Rest Api</title>
+    <title>Book Shop Rest Api</title>
 </head>
 <body>
 <h1>Welcome to the Bookshop Api Service</h1>
