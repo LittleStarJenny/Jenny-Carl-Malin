@@ -1,9 +1,9 @@
 <?php
 // $host    = 'localhost';
 // $port    = 8889;
-// $db      = 'classicmodels';
+// $db      = 'books';
 // $user    = 'root';
-// $pass    = 'root';
+// $pass    = 'Carlphp2019';
 // $charset = 'utf8mb4';
 // $options = [
 //     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -34,7 +34,7 @@
 // }
 // // Everytime you make a request, update the stats.
 // // How many requests should each user be able to make during what time period?
-// ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,8 +45,9 @@
     <title>Book Shop Rest Api</title>
 </head>
 <body>
-<h1>Welcome to the Bookshop Api Service</h1>
+<h1>Welcome to The Bookshop Api Service</h1>
 <h2>Please register with email and password to get api-key</h2>    
+<form action=""></form>
 
 </body>
 </html>
