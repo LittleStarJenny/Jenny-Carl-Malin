@@ -2,7 +2,7 @@
   class Post {
     // DB 
     private $conn;
-    private $table = 'authors';
+    private $table = 'authors2';
 
     // Post Properties
     public $publisherId;
@@ -18,7 +18,7 @@
     // READ 
     public function read() {
       // Create query
-      $query = 'SELECT * FROM authors';
+      $query = 'SELECT * FROM authors2';
       // Prepare statement
       $stmt = $this->conn->prepare($query);
       // Execute query
@@ -52,14 +52,13 @@
     // UPDATE
     public function update() {
           // Create query
-          $query = 'UPDATE ' . $this->table . ' SET publisherId = :publisherId, authorName = :authorName WHERE authorId = :authorId';
+          $query = 'UPDATE ' . $this->table . ' SET publisherId = :publisherId, authorName = :authorName, authorId = :authorId WHERE authorId = :authorId';
 
           // Prepare statement
           $stmt = $this->conn->prepare($query);
           // Clean data
           $this->publisherId = htmlspecialchars(strip_tags($this->publisherId));
-          $this->authorName = htmlspecialchars(strip_tags($this->authorName));
-      
+          $this->authorName = htmlspecialchars(strip_tags($this->authorName));      
 
           // Bind data
           $stmt->bindParam(':publisherId', $this->publisherId);

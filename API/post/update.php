@@ -21,6 +21,7 @@
   // Set ID to update
   $post->publisherId = $data->publisherId;
   $post->authorName = $data->authorName;
+  $post->authorId = $data->authorId;
 
   // Update post
   if($post->update()) {
