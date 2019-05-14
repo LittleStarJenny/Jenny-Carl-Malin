@@ -35,7 +35,7 @@
 // // Everytime you make a request, update the stats.
 // // How many requests should each user be able to make during what time period?
 $host = 'localhost';
-$db = 'book';
+$db = 'tester';
 $user = 'root';
 $pass = '';
 $charset = 'utf8';
