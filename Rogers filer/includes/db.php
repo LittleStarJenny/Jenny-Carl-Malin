@@ -4,7 +4,7 @@ class DBConnect
 {
     private $host    = 'localhost';
     //private $port    = 8889;
-    private $db      = 'bookshop';
+    private $db      = 'jennydb';
     private $user    = 'root';
     private $pass    = '';
     private $charset = 'utf8mb4';
