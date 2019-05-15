@@ -1,3 +1,0 @@
-<?php
-//Created this file
-?>
