@@ -26,9 +26,9 @@ class Books {
         FROM
         ' . $this->table . ' t
         JOIN
-        authors as A on a.authorId = t.authorId
+        authors as a on a.authorId = t.authorId
         JOIN
-        publishers as P on p.publisherId = a.publisherId';
+        publishers as p on p.publisherId = a.publisherId';
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -65,9 +65,7 @@ class Books {
         $this->bookTitle = $row['bookTitle'];
         $this->authorName = $row['authorName'];
         $this->publisherName = $row['publisherName'];
-       // $this->bookTitle = $row['bookId'];
-
-       
+       // $this->bookTitle = $row['bookId'];       
     }
 
 //create book
