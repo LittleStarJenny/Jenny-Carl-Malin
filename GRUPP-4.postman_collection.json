@@ -102,6 +102,49 @@
 			"response": []
 		},
 		{
+			"name": "http://postman.stellasinawebb.se/api/rev_api/bookbyscore.php?apiKey=5cdc665eac26c",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://postman.stellasinawebb.se/api/rev_api/bookbyscore.php?apiKey=5cdc665eac26c",
+					"protocol": "http",
+					"host": [
+						"postman",
+						"stellasinawebb",
+						"se"
+					],
+					"path": [
+						"api",
+						"rev_api",
+						"bookbyscore.php"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "5cdc665eac26c"
+						}
+					]
+				},
+				"description": "book by score"
+			},
+			"response": []
+		},
+		{
 			"name": "http://postman.stellasinawebb.se/api/book_api/createbook.php?apiKey=5cdc665eac26c",
 			"request": {
 				"method": "POST",
