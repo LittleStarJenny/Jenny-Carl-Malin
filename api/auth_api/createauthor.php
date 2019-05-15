@@ -12,22 +12,21 @@
   $database = new Database();
   $db = $database->connection();
 
-  // Instantiate blog post object
-  $post = new Post($db);
+  $author = new Authors($db);
 
   // Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
-  $post->publisherId = $data->publisherId;
-  $post->authorName = $data->authorName;
+  $author->publisherId = $data->publisherId;
+  $author->authorName = $data->authorName;
  
-  // Create post
-  if($post->create()) {
+  // Create author
+  if($author->createAuthor()) {
     echo json_encode(
-      array('message' => 'Post Created')
+      array('message' => 'Author Created')
     );
     
   } else {
     echo json_encode(
-      array('message' => 'Post Not Created')
+      array('message' => 'Author Not Created')
     );
   }
