@@ -10,6 +10,11 @@ class Books {
     public $authorName;
     public $publisherId;
     public $publisherName;
+    public $revId;
+    public $reviewText;
+    public $reviewScore;
+    public $reviewDate;
+    public $reviewAuthor;
 
     public function __construct($db) {
         $this->conn = $db;
@@ -38,8 +43,8 @@ class Books {
 
     public function read_single() {
         $query = 'SELECT
-        a.authorId as authorId,
-        p.publisherId as publisherId,
+        a.authorId,
+        p.publisherId,
         t.bookId,
         t.bookTitle,
         a.authorName,
@@ -47,9 +52,9 @@ class Books {
         FROM
         ' . $this->table . ' t
         JOIN
-        authors as A on a.authorId = t.authorId
+        authors as a on a.authorId = t.authorId
         JOIN
-        publishers as P on p.publisherId = a.publisherId
+        publishers as p on p.publisherId = a.publisherId
         WHERE 
         t.bookId = ?
         LIMIT 0,1';
@@ -65,8 +70,61 @@ class Books {
         $this->bookTitle = $row['bookTitle'];
         $this->authorName = $row['authorName'];
         $this->publisherName = $row['publisherName'];
-       // $this->bookTitle = $row['bookId'];       
+       // $this->bookTitle = $row['bookId']; 
+             
     }
+
+        //Select all books from authorId
+        public function booksByauthor() {
+            $query = 'SELECT
+            a.authorId,
+            p.publisherId,
+            t.bookId,
+            t.bookTitle,
+            a.authorName,
+            p.publisherName
+            FROM
+            ' . $this->table . ' t
+            JOIN
+            authors as A on a.authorId = t.authorId
+            JOIN
+            publishers as P on p.publisherId = a.publisherId
+            WHERE 
+            a.authorId = ?';
+    
+            $stmt = $this->conn->prepare($query);
+    
+            $stmt->bindParam(1, $this->authorId);
+    
+            $stmt->execute();
+    
+            return $stmt;
+                 
+        }
+
+        //Select all reviews by book
+        public function reviewsBybook() {
+            $query = 'SELECT
+            b.bookId,
+            b.bookTitle,
+            r.reviewText,
+            r.reviewDate            
+            FROM
+            ' . $this->table . ' b
+            JOIN
+            reviews as r on r.bookId = b.bookId
+            WHERE 
+            b.bookId = ?';
+    
+            $stmt = $this->conn->prepare($query);
+    
+            $stmt->bindParam(1, $this->bookId);
+    
+            $stmt->execute();
+    
+            return $stmt;
+                    
+        }
 
 //create book
 public function createbook() {
@@ -147,10 +205,12 @@ class Authors {
     private $conn;
     private $table = 'authors';
 
-    
-    public $publisherId;
-    public $authorName;
+    public $bookId;
+    public $bookTitle;
     public $authorId;
+    public $authorName;
+    public $publisherId;
+    public $publisherName;
    
     // Constructor with DB
     public function __construct($db) {
@@ -309,6 +369,99 @@ public function deletePublisher() {
 
     $this->publisherId = htmlspecialchars(strip_tags($this->publisherId));
     $stmt->bindParam(':publisherId', $this->publisherId);
+
+    if($stmt->execute()) {
+        return true;
+    }
+    printf("Error: $s. \n", $stmt->error);
+
+    return false;    
+}
+
+}
+
+class Reviews {
+    private $conn;
+    private $table = 'reviews';
+
+    public $bookId;
+    public $bookTitle;
+    public $revId;
+    public $revText;
+    public $revScore;
+    public $revDate;
+    public $revAuthor;
+
+    public function __construct($db) {
+        $this->conn = $db;
+    }
+
+
+//create review
+public function createReview() {
+    $query = 'INSERT INTO ' . $this->table . '
+    SET
+        revId = :reviewId,
+        reviewText = :reviewText,
+        reviewScore = :reviewText,
+        reviewDate = :reviewText,
+        reviewAuthor = :reviewAuthor';
+
+        $stmt = $this->conn->prepare($query);
+        
+        //Clean
+        $this->bookId = htmlspecialchars(strip_tags($this->bookId));
+        $this->bookTitle = htmlspecialchars(strip_tags($this->bookTitle));
+        $this->authorId = htmlspecialchars(strip_tags($this->authorId));
+        //Bind
+        $stmt->bindParam(':bookId', $this->bookId);
+        $stmt->bindParam(':bookTitle', $this->bookTitle);
+        $stmt->bindParam(':authorId', $this->authorId);
+
+        if($stmt->execute()) {
+            return true;
+        }
+        printf("Error: $s. \n", $stmt->error);
+
+        return false;
+}
+
+//update Book
+public function updatebook() {
+    $query = 'UPDATE ' . $this->table . '
+    SET
+        bookId = :bookId,
+        bookTitle = :bookTitle,
+        authorId = :authorId
+    WHERE
+        bookId = :bookId';
+
+        $stmt = $this->conn->prepare($query);
+        
+        //Clean
+        $this->bookId = htmlspecialchars(strip_tags($this->bookId));
+        $this->bookTitle = htmlspecialchars(strip_tags($this->bookTitle));
+        $this->authorId = htmlspecialchars(strip_tags($this->authorId));
+        //Bind
+        $stmt->bindParam(':bookId', $this->bookId);
+        $stmt->bindParam(':bookTitle', $this->bookTitle);
+        $stmt->bindParam(':authorId', $this->authorId);
+
+        if($stmt->execute()) {
+            return true;
+        }
+        printf("Error: $s. \n", $stmt->error);
+
+        return false;
+}
+//Delete Book
+public function deletebook() {
+    $query = 'DELETE FROM ' . $this->table . ' WHERE bookId = :bookId';
+
+    $stmt = $this->conn->prepare($query);
+
+    $this->bookId = htmlspecialchars(strip_tags($this->bookId));
+    $stmt->bindParam(':bookId', $this->bookId);
 
     if($stmt->execute()) {
         return true;
