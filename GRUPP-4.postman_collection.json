@@ -1,0 +1,225 @@
+{
+	"info": {
+		"_postman_id": "da6dbd77-e740-47ea-b1c0-af7b1d2ff441",
+		"name": "GRUPP-4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": " http://postman.stellasinawebb.se/api/book_api/read.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://postman.stellasinawebb.se/api/book_api/read.php?apiKey=5cdc665eac26c",
+					"protocol": "http",
+					"host": [
+						"postman",
+						"stellasinawebb",
+						"se"
+					],
+					"path": [
+						"api",
+						"book_api",
+						"read.php"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "5cdc665eac26c"
+						}
+					]
+				},
+				"description": "Get all books"
+			},
+			"response": []
+		},
+		{
+			"name": "http://postman.stellasinawebb.se/api/book_api/read_single.php?bookId=3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://postman.stellasinawebb.se/api/book_api/read_single.php?bookId=3&apiKey=5cdc665eac26c",
+					"protocol": "http",
+					"host": [
+						"postman",
+						"stellasinawebb",
+						"se"
+					],
+					"path": [
+						"api",
+						"book_api",
+						"read_single.php"
+					],
+					"query": [
+						{
+							"key": "bookId",
+							"value": "3"
+						},
+						{
+							"key": "apiKey",
+							"value": "5cdc665eac26c"
+						}
+					]
+				},
+				"description": "get single book"
+			},
+			"response": []
+		},
+		{
+			"name": "http://postman.stellasinawebb.se/api/book_api/createbook.php?apiKey=5cdc665eac26c",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t \"bookId\" : \"\",\n     \"Booktitle\" : \"hejsanhoppsan\",\n     \"authorId\" : \"3\"\n}"
+				},
+				"url": {
+					"raw": "http://postman.stellasinawebb.se/api/book_api/createbook.php?apiKey=5cdc665eac26c",
+					"protocol": "http",
+					"host": [
+						"postman",
+						"stellasinawebb",
+						"se"
+					],
+					"path": [
+						"api",
+						"book_api",
+						"createbook.php"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "5cdc665eac26c"
+						}
+					]
+				},
+				"description": "create book"
+			},
+			"response": []
+		},
+		{
+			"name": "http://postman.stellasinawebb.se/api/pupl_api/deletepublisher.php?apiKey=5cdc665eac26c",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t \"bookId\" : \"\",\n     \"Booktitle\" : \"hejsanhoppsan\",\n     \"authorId\" : \"3\"\n}"
+				},
+				"url": {
+					"raw": "http://postman.stellasinawebb.se/api/book_api/deletebook.php?apiKey=5cdc665eac26c",
+					"protocol": "http",
+					"host": [
+						"postman",
+						"stellasinawebb",
+						"se"
+					],
+					"path": [
+						"api",
+						"book_api",
+						"deletebook.php"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "5cdc665eac26c"
+						}
+					]
+				},
+				"description": "delete a publisher"
+			},
+			"response": []
+		},
+		{
+			"name": "http://postman.stellasinawebb.se/api/pupl_api/updatepublisher.php?apiKey=5cdc665eac26c",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bookTitle\": \"Mio min Mio\",\n    \"authorName\": \"Astrid Lindgren\",\n    \"publisherName\": \"Rabén & Sjögren\"\n}"
+				},
+				"url": {
+					"raw": "http://postman.stellasinawebb.se/api/book_api/updatebook.php?apiKey=5cdc665eac26c",
+					"protocol": "http",
+					"host": [
+						"postman",
+						"stellasinawebb",
+						"se"
+					],
+					"path": [
+						"api",
+						"book_api",
+						"updatebook.php"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "5cdc665eac26c"
+						}
+					]
+				},
+				"description": "update publisher"
+			},
+			"response": []
+		}
+	]
+}
