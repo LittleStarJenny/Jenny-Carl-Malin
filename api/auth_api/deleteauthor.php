@@ -10,25 +10,24 @@
 
   // Instantiate DB & connect
   $database = new Database();
-  $db = $database->connect();
+  $db = $database->connection();
 
-  // Instantiate blog post object
-  $post = new Post($db);
+  $author = new Authors($db);
 
   // Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
   // Set ID to update
-  $post->authorId = $data->authorId;
+  $author->authorId = $data->authorId;
 
-  // Delete post
-  if($post->delete()) {
+  // Delete author
+  if($author->deleteAuthor()) {
     echo json_encode(
-      array('message' => 'Post Deleted')
+      array('message' => 'Author Deleted')
     );
 
   } else {
     echo json_encode(
-      array('message' => 'Post Not Deleted')
+      array('message' => 'Author Not Deleted')
     );
   }

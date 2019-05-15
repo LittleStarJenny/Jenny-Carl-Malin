@@ -10,26 +10,25 @@
 
   // Instantiate DB & connect
   $database = new Database();
-  $db = $database->connect();
+  $db = $database->connection();
 
-  // Instantiate blog post object
-  $post = new Post($db);
+  $author = new Authors($db);
 
   // Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
   // Set ID to update
-  $post->publisherId = $data->publisherId;
-  $post->authorName = $data->authorName;
-  $post->authorId = $data->authorId;
+  $author->publisherId = $data->publisherId;
+  $author->authorName = $data->authorName;
+  $author->authorId = $data->authorId;
 
-  // Update post
-  if($post->update()) {
+  // Update author
+  if($author->updateAuthor()) {
     echo json_encode(
-      array('message' => 'Post Updated')
+      array('message' => 'Author Updated')
     );
   } else {
     echo json_encode(
-      array('message' => 'Post Not Updated')
+      array('message' => 'Author Not Updated')
     );
   }

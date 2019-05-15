@@ -142,12 +142,12 @@ public function deletebook() {
 
 }
 
-class Post {
+class Authors {
     // DB 
     private $conn;
     private $table = 'authors';
 
-    // Post Properties
+    
     public $publisherId;
     public $authorName;
     public $authorId;
@@ -157,8 +157,8 @@ class Post {
       $this->conn = $db;
     }
 
-     // CREATE
-     public function create() {
+     // CREATE Author
+     public function createAuthor() {
         // Create query
         $query = 'INSERT INTO ' . $this->table . ' SET publisherId = :publisherId, authorName = :authorName';
         // Prepare statement
@@ -180,8 +180,8 @@ class Post {
     return false;
   }
 
-  // UPDATE
-  public function update() {
+  // UPDATE Author
+  public function updateAuthor() {
         // Create query
         $query = 'UPDATE ' . $this->table . ' SET publisherId = :publisherId, authorName = :authorName, authorId = :authorId WHERE authorId = :authorId';
 
@@ -205,8 +205,8 @@ class Post {
         return false;
   }
   
-  // DELETE
-  public function delete() {
+  // DELETE Author
+  public function deleteAuthor() {
         // Create query
         $query = 'DELETE FROM ' . $this->table . ' WHERE authorId = :authorId';
         // Prepare statement
