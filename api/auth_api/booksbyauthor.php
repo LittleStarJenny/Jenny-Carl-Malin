@@ -3,7 +3,7 @@
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
-include_once '../../config/conn.php';
+//include_once '../../config/conn.php';
 include_once '../../classes/class.php';
 
 $database = new Database();
@@ -22,9 +22,9 @@ if($result) {
         extract($row);
 
         $book_item = array(
+            'authorName' => $authorName,
             'bookTitle' => $bookTitle,
-            'revText' => $revText,
-            'revDate' => $revDate,
+            'publisherName' => $publisherName          
         );
 
         array_push($books_arr, $book_item);

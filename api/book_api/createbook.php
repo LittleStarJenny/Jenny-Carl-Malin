@@ -19,7 +19,7 @@ $book->bookId = $data->bookId;
 $book->bookTitle = $data->bookTitle;
 $book->authorId = $data->authorId;
 
-if($book->createbook()) {
+if($book->createBook()) {
     echo json_encode(
         array('message' => 'Book Created')
     );

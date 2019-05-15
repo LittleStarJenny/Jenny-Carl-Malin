@@ -1,22 +1,20 @@
 <?php
 
 include_once 'config/conn.php';
-include_once 'classes/class.php';
+include_once 'classes/apiclass.php';
 $database = new Database();
 $db = $database->connection();
 
 $api = new API($db);
-
-
 if (isset($_POST['Send'])) {
-   $apiKey = uniqid();
+    $apiKey = uniqid();
 
-    $success = $api->createApi();
-    if($success) {
-    echo 'Your api-key is: ' . ($apiKey);   
-} else {
-    echo 'not working';
-}
+        $success = $api->createApi();
+        if($success) {
+        echo 'Your api-key is: ' . ($apiKey);   
+    } else {
+        echo 'not working';
+    }
 }
 ?>
 

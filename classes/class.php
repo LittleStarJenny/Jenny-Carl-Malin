@@ -1,4 +1,43 @@
 <?php 
+include_once '../../config/conn.php';
+$database = new Database();
+$db = $database->connection();
+
+$testAuthenticate = new AuthenticateRequest($db);
+if (!empty($_GET["apiKey"])) {
+$testAuthenticate->testAuthentic($_GET['apiKey']);
+var_dump($_GET['apiKey']);
+}else {
+    header("HTTP/1.1 403 Forbidden");
+    echo json_encode("Authorization error");
+    die;
+}
+class AuthenticateRequest {
+    private $conn;
+    public function __construct($db) {
+        $this->conn = $db;
+    }
+    public function testAuthentic($uniqueKey)
+    {
+        $sql = null;
+        $parameters = null;
+
+        $sql = " SELECT * FROM userapi WHERE apiKey = :apiKey ";
+        $parameters = ['apiKey' => $uniqueKey];
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($parameters);
+        $row = $stmt->fetch();
+   
+        
+        if ($row) {
+            header("HTTP/1.1 200 ok");
+        } else {
+            echo json_encode("There was an error with your authentification. please re-enter your API key or request a new one");
+            header("HTTP/1.1 403 Forbidden");
+            die;
+        }
+    }
+}
 
 class Books {
     private $conn;
@@ -20,7 +59,7 @@ class Books {
         $this->conn = $db;
     }
 
-    public function read() {
+    public function readBook() {
         $query = 'SELECT
         a.authorId as authorId,
         p.publisherId as publisherId,
@@ -124,10 +163,10 @@ class Books {
     
             return $stmt;
                     
-        }
+        }     
 
 //create book
-public function createbook() {
+public function createBook() {
     $query = 'INSERT INTO ' . $this->table . '
     SET
         bookId = :bookId,
@@ -154,7 +193,7 @@ public function createbook() {
 }
 
 //update Book
-public function updatebook() {
+public function updateBook() {
     $query = 'UPDATE ' . $this->table . '
     SET
         bookId = :bookId,
@@ -182,7 +221,7 @@ public function updatebook() {
         return false;
 }
 //Delete Book
-public function deletebook() {
+public function deleteBook() {
     $query = 'DELETE FROM ' . $this->table . ' WHERE bookId = :bookId';
 
     $stmt = $this->conn->prepare($query);
@@ -210,6 +249,7 @@ class Authors {
     public $authorId;
     public $authorName;
     public $publisherId;
+    public $Country;
     public $publisherName;
    
     // Constructor with DB
@@ -220,16 +260,26 @@ class Authors {
      // CREATE Author
      public function createAuthor() {
         // Create query
-        $query = 'INSERT INTO ' . $this->table . ' SET publisherId = :publisherId, authorName = :authorName';
+        $query = 'INSERT INTO ' . $this->table . ' 
+        SET 
+        authorId = :authorId, 
+        authorName = :authorName,
+        publisherId = :publisherId,
+        Country = :Country
+        ';
         // Prepare statement
         $stmt = $this->conn->prepare($query);
         // Clean data
-        $this->publisherId = htmlspecialchars(strip_tags($this->publisherId));
+        $this->authorId = htmlspecialchars(strip_tags($this->authorId));
         $this->authorName = htmlspecialchars(strip_tags($this->authorName));
+        $this->publisherId = htmlspecialchars(strip_tags($this->publisherId));
+        $this->Country = htmlspecialchars(strip_tags($this->Country));
 
         // Bind data
-        $stmt->bindParam(':publisherId', $this->publisherId);
+        $stmt->bindParam(':authorId', $this->authorId);
         $stmt->bindParam(':authorName', $this->authorName);
+        $stmt->bindParam(':publisherId', $this->publisherId);
+        $stmt->bindParam(':Country', $this->Country);
    
         // Execute query
         if($stmt->execute()) {
@@ -387,36 +437,58 @@ class Reviews {
     public $bookId;
     public $bookTitle;
     public $revId;
-    public $revText;
-    public $revScore;
-    public $revDate;
-    public $revAuthor;
+    public $reviewText;
+    public $reviewScore;
+    public $reviewDate;
+    public $reviewAuthor;
 
     public function __construct($db) {
         $this->conn = $db;
     }
+
+    public function bookScore() {
+        $query = 'SELECT
+        b.bookId,
+        b.bookTitle,
+        r.reviewScore
+        FROM
+        ' . $this->table . ' r
+        JOIN
+        books as b on b.bookId = r.bookId
+        ORDER BY 
+        r.reviewScore DESC';
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }   
 
 
 //create review
 public function createReview() {
     $query = 'INSERT INTO ' . $this->table . '
     SET
-        revId = :reviewId,
+        revId = :revId,
         reviewText = :reviewText,
-        reviewScore = :reviewText,
-        reviewDate = :reviewText,
+        reviewScore = :reviewScore,
+        reviewDate = :reviewDate,
         reviewAuthor = :reviewAuthor';
 
         $stmt = $this->conn->prepare($query);
         
         //Clean
-        $this->bookId = htmlspecialchars(strip_tags($this->bookId));
-        $this->bookTitle = htmlspecialchars(strip_tags($this->bookTitle));
-        $this->authorId = htmlspecialchars(strip_tags($this->authorId));
+        $this->revId = htmlspecialchars(strip_tags($this->revId));
+        $this->reviewText = htmlspecialchars(strip_tags($this->reviewText));
+        $this->reviewScore = htmlspecialchars(strip_tags($this->reviewScore));
+        $this->reviewDate = htmlspecialchars(strip_tags($this->reviewDate));
+        $this->reviewAuthor = htmlspecialchars(strip_tags($this->reviewAuthor));
         //Bind
-        $stmt->bindParam(':bookId', $this->bookId);
-        $stmt->bindParam(':bookTitle', $this->bookTitle);
-        $stmt->bindParam(':authorId', $this->authorId);
+        $stmt->bindParam(':revId', $this->revId);
+        $stmt->bindParam(':reviewText', $this->reviewText);
+        $stmt->bindParam(':reviewScore', $this->reviewScore);
+        $stmt->bindParam(':reviewDate', $this->reviewDate);
+        $stmt->bindParam(':reviewAuthor', $this->reviewAuthor);
 
         if($stmt->execute()) {
             return true;
@@ -426,26 +498,32 @@ public function createReview() {
         return false;
 }
 
-//update Book
-public function updatebook() {
+//update review
+public function updateReview() {
     $query = 'UPDATE ' . $this->table . '
     SET
-        bookId = :bookId,
-        bookTitle = :bookTitle,
-        authorId = :authorId
+        revId = :revId,
+        reviewText = :reviewText,
+        reviewScore = :reviewScore,
+        reviewDate = :reviewDate,
+        reviewAuthor = :reviewAuthor
     WHERE
-        bookId = :bookId';
+        revId = :revId';
 
         $stmt = $this->conn->prepare($query);
         
         //Clean
-        $this->bookId = htmlspecialchars(strip_tags($this->bookId));
-        $this->bookTitle = htmlspecialchars(strip_tags($this->bookTitle));
-        $this->authorId = htmlspecialchars(strip_tags($this->authorId));
+        $this->revId = htmlspecialchars(strip_tags($this->revId));
+        $this->reviewText = htmlspecialchars(strip_tags($this->reviewText));
+        $this->reviewScore = htmlspecialchars(strip_tags($this->reviewScore));
+        $this->reviewDate = htmlspecialchars(strip_tags($this->reviewDate));
+        $this->reviewAuthor = htmlspecialchars(strip_tags($this->reviewAuthor));
         //Bind
-        $stmt->bindParam(':bookId', $this->bookId);
-        $stmt->bindParam(':bookTitle', $this->bookTitle);
-        $stmt->bindParam(':authorId', $this->authorId);
+        $stmt->bindParam(':revId', $this->revId);
+        $stmt->bindParam(':reviewText', $this->reviewText);
+        $stmt->bindParam(':reviewScore', $this->reviewScore);
+        $stmt->bindParam(':reviewDate', $this->reviewDate);
+        $stmt->bindParam(':reviewAuthor', $this->reviewAuthor);
 
         if($stmt->execute()) {
             return true;
@@ -454,14 +532,14 @@ public function updatebook() {
 
         return false;
 }
-//Delete Book
-public function deletebook() {
-    $query = 'DELETE FROM ' . $this->table . ' WHERE bookId = :bookId';
+//Delete review
+public function deleteReview() {
+    $query = 'DELETE FROM ' . $this->table . ' WHERE revId = :revId';
 
     $stmt = $this->conn->prepare($query);
 
-    $this->bookId = htmlspecialchars(strip_tags($this->bookId));
-    $stmt->bindParam(':bookId', $this->bookId);
+    $this->revId = htmlspecialchars(strip_tags($this->revId));
+    $stmt->bindParam(':revId', $this->revId);
 
     if($stmt->execute()) {
         return true;
@@ -472,50 +550,6 @@ public function deletebook() {
 }
 
 }
-
-class API {
-        // DB 
-        private $conn;
-        private $table = 'userapi';
-    
-        // Post Properties
-   
-        public $userName;
-        public $passWord;
-        public $apiKey;
-       
-        // Constructor with DB
-        public function __construct($db) {
-          $this->conn = $db;
-        }
-
-        public function createApi() {
-            $query = 'INSERT INTO ' . $this->table . '
-            SET
-                
-                userName = :userName,
-                passWord = :passWord,
-                apiKey = :apiKey';
-
-                $stmt = $this->conn->prepare($query);
-            
-            $this->userName = filter_input(INPUT_POST, 'userName', FILTER_SANITIZE_STRING);
-            $this->passWord = password_hash('passWord', PASSWORD_DEFAULT);
-            $this->apiKey = uniqid(); 
-    
-        
-        $stmt->bindParam(':userName', $this->userName);
-        $stmt->bindParam(':passWord', $this->passWord);
-        $stmt->bindParam(':apiKey', $this->apiKey);
-
-        if($stmt->execute()) {
-            return true;
-        }
-        printf("Error: $s. \n", $stmt->error);
-
-        return false;
-        }
-    }
 
 
 

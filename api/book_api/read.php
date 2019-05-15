@@ -11,7 +11,7 @@ $db = $database->connection();
 
 $book = new Books($db);
 
-$result = $book->read();
+$result = $book->readBook();
 $num = $result->rowCount();
 
 if($num > 0) {

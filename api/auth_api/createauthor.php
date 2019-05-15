@@ -16,8 +16,11 @@
 
   // Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
-  $author->publisherId = $data->publisherId;
+  $author->authorId = $data->authorId;
   $author->authorName = $data->authorName;
+  $author->publisherId = $data->publisherId;
+  $author->Country = $data->Country;
+
  
   // Create author
   if($author->createAuthor()) {

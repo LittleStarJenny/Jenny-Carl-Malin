@@ -3,15 +3,15 @@
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
-include_once '../config/conn.php';
-include_once '../classes/class.php';
+
+include_once '../../classes/class.php';
 
 $database = new Database();
 $db = $database->connection();
 
-$book = new Books($db);
+$review = new Reviews($db);
 
-$result = $book->read();
+$result = $review->bookScore();
 $num = $result->rowCount();
 
 if($num > 0) {
@@ -23,11 +23,11 @@ if($num > 0) {
         extract($row);
 
         $book_item = array(
-            'bookId' => $bookId,
+
+            'reviewScore' => $reviewScore,
             'bookTitle' => $bookTitle,
          //   'authorId' => $authorId,
-            'authorName' => $authorName,
-            'publisherName' => $publisherName
+            
         );
         array_push($books_arr, $book_item);
         //array_push($books_arr['data'], $book_item);

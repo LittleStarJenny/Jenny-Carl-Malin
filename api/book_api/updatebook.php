@@ -20,12 +20,12 @@
   $book->authorId = $data->authorId;
  
   // Update book
-  if($book->updatebook()) {
+  if($book->updateBook()) {
     echo json_encode(
-      array('message' => 'Post Updated')
+      array('message' => 'Book Updated')
     );
   } else {
     echo json_encode(
-      array('message' => 'Post Not Updated')
+      array('message' => 'Book Not Updated')
     );
   }

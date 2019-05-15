@@ -17,7 +17,7 @@
   $book->bookId = $data->bookId;
 
   // Delete book
-  if($book->deletebook()) {
+  if($book->deleteBook()) {
     echo json_encode(
       array('message' => 'Book Deleted')
     );
